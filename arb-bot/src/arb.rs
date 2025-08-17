@@ -78,11 +78,12 @@ pub fn to_units(amount: f64, decimals: u32) -> U256 {
     U256::from(value)
 }
 
+
 pub fn from_units(x: U256, decimals: u32) -> f64 {
-    let scale = 10u32.pow(decimals) as f64;
-    let hi = x / U256::from(1_000_000_000_000_000_000u128);
-    let lo = x % U256::from(1_000_000_000_000_000_000u128);
-    // convert safely (U256 -> f64). This is approximate, but fine for quoting.
+    
+    let scale = 10u128.pow(decimals) as f64;
+    let hi = x / U256::exp10(18);  
+    let lo = x % U256::exp10(18);
     (hi.as_u128() as f64) * 1e18 / scale + (lo.as_u128() as f64) / scale
 }
 

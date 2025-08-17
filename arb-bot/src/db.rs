@@ -31,7 +31,6 @@ impl Db {
         Ok(Self { conn })
     }
 
-    @allow(non_snake_case)
     pub fn insert_opportunity(
         &self,
         dex_buy: &str,

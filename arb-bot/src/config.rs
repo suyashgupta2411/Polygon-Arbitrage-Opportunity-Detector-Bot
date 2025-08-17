@@ -26,11 +26,14 @@ impl Config {
     pub fn load() -> Result<Self> {
         dotenv().ok();
 
-        let rpc_url = env::var("RPC_URL")
-            .or_else(|_| {
-                let key = env::var("ALCHEMY_KEY")?;
-                Ok(format!("https://polygon-mainnet.g.alchemy.com/v2/{key}"))
-            })?;
+        let rpc_url = match env::var("RPC_URL") {
+    Ok(v) => v,
+    Err(_) => {
+        let key = env::var("ALCHEMY_KEY")?; // bubbles VarError into anyhow
+        format!("https://polygon-mainnet.g.alchemy.com/v2/{key}")
+    }
+};
+
 
         let usdc = env::var("USDC")?;
         let weth = env::var("WETH")?;
